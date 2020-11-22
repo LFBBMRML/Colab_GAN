@@ -21,3 +21,7 @@ ActivationFunktion Generator: LeakyReLU und Softmax
 ActivationFunktion Discriminator: LeakyReLU und Softmax
 Optimizer: ADAM
 Funktion generate_and_save_image() Aufruf model() zu generator() geändert.
+
+Test 3:
+gen_opt = tf.keras.optimizers.Adam(1e-7) entfernt.
+Anstatt gen_opt und dis_opt nur eine Zeile: opt = tf.keras.optimizers.Adam(learning_rate=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-7).
