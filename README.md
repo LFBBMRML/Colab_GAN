@@ -8,3 +8,5 @@ ActivationFunktion Generator: LeakyReLU und Sigmoid
 ActivationFunktion Discriminator: LeakyReLU und Sigmoid
 
 Der Fehler wird mittels BinaryCrossentropy berechnet.
+
+Es fehlt: Die Diagramme
