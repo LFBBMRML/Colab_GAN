@@ -36,3 +36,5 @@ G = 256, 128, 64, 3
 LeakyReLU alpha = 0.2
 Ohne Aktivierungsfunktion am Ende des D
 Funktion "layers.Conv2DTranspose" mit use_bias=Flase ergänzt (nach Code von DCGAN von Tensorflow)
+Aktivierungsfunktion letzter Layer G = tanh
+Aktivierungsfunktion letzter Layer D = keine Aktivierungsfunktion
