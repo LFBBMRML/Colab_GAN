@@ -27,4 +27,7 @@ gen_opt = tf.keras.optimizers.Adam(1e-7) entfernt.
 Anstatt gen_opt und dis_opt nur eine Zeile: opt = tf.keras.optimizers.Adam(learning_rate=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-7).
 
 Test 4:
-Dropout auf Maximum gesetzt D=0.7 G=0.5
+Dropout auf Maximum gesetzt D=0.7 G=0.5 (irgendwie kein Ergebnis - ohne Fehlermeldung. Evtl Probleme mit der Laufzeitverbindung)
+
+Test 5: 
+Anpassen der Netzwerkarchitektur.
