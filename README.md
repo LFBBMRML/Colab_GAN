@@ -31,3 +31,8 @@ Dropout auf Maximum gesetzt D=0.7 G=0.5 (irgendwie kein Ergebnis - ohne Fehlerme
 
 Test 5: 
 Anpassen der Netzwerkarchitektur.
+D = 64, 128
+G = 256, 128, 64, 3
+LeakyReLU alpha = 0.2
+Ohne Aktivierungsfunktion am Ende des D
+Funktion "layers.Conv2DTranspose" mit use_bias=Flase ergänzt (nach Code von DCGAN von Tensorflow)
