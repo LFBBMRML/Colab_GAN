@@ -1,0 +1,156 @@
+\section{GAN - Generative Adversarial Network} \label{GAN}
+\begin{document}
+
+\glq \glqq the coolest idea in deep learning in the last 20 years\grqq{} \grq{} \cite{0}
+So beschrieb Yann LeCun, Leiter der Facebook KI-Abteilung in New York, das von Ian J. Goodfellow in 2014 vorgestellte Verfahren gegenüber der Carnegie Mellon University in Pittsburgh, Pennsylvania. \cite[vgl.][]{0} \\
+
+
+Es handelt sich um ein neuartiges \textit{deep neural network} im Bereich des unüberwachten Lernens - das \textit{Generative Adversarial Network}. Dabei stehen sich zwei konkurrierende Modelle gegenüber:
+Auf der einen Seite der \textit{Generator} (engl. generator), ein \textit{generative} Modell, welches gefälschte Daten erstellt. Auf der anderen Seite der \textit{Diskriminator} (engl. discriminator), ein \textit{diskriminatives} Modell. Dessen Sinn ist es, die generierten Daten von realen Beispielen unterscheiden zu können und dient demnach als Klassifikator.
+Während sich die Modelle gegenseitig trainieren, verfolgt das \textit{generative} Modell das Ziel, das \textit{diskriminative} Modell zu täuschen, sodass dieses die generierte Daten nicht von echten Beispielen differenzieren kann.
+Die Zielsetzung eines GANs ist es, täuschend echte Daten maschinell zu erstellen.
+Ian J. Goodfellow präsentierte die Netzwerke im Paper \cite{4} als \textit{multilayer Perzepronen}, jedoch bestehen inzwischen einige weitere Architekturen, wobei das \textit{Deep Convolutional Generative Adversarial Network} (DCGAN) an beachtlicher Bedeutung gewonnen hat.
+\cites[vgl.][]{4}[S. 5]{5}[S. 7]{6}
+
+(Generator erstellt Inferenz)
+\subsection{Generative und diskriminative Modelle}
+Wie bereits angeführt, setzt sich ein GAN aus einem \textit{generativen} und einem \textit{diskriminativen} Modell zusammen. Doch welchem Sinn und Zweck dienen diese Modelle konkret? Diese Frage soll nachstehend ausführlich beantwortet werden. \\
+
+Obwohl beide Vorgehen mit echten und generierten Daten arbeiten, verfolgen sie unterschiedliche Absichten. 
+Sei X eine Dateninstanz und Y zugehörige Label, so ergibt sich Tabelle \ref{tab:gen_dis_Modell}:
+
+\begin{table}[h]
+\centering
+
+	\begin{tabular}[h]{p{2.8cm}|p{7.5cm}|p{4.5cm}}
+		Modell & Wahrscheinlichkeit & Ziel 
+		\rule{0pt}{1.5em}\\
+		\hline
+		\rule{0pt}{1.5em}
+		\textit{Generatives} & bestimmt die Wahrscheinlichkeit P(X,Y), bzw. P(X), also Wahrscheinlichkeit eines konkreten Beispiels X & Erstellen von überzeugend realistischen Daten\\
+		\hline
+		\rule{0pt}{1.5em}
+		\textit{Diskriminatives} & arbeitet mit der bedingte Wahrscheinlichkeit P(X|Y), also wie wahrscheinlich es ist, dass eine gewisse Instanz einem bestimmten Label zugeordnet werden kann & Differenzierung verschiedener Instanzen\\
+	\end{tabular}
+	\captionsetup{justification=centering}
+	\caption{Aufgabe eines \textit{generativen} und \textit{diskriminativen} Modells \\ Daten in Anlehnung an \cite[vgl.][]{30}}
+	\label{tab:gen_dis_Modell}
+\end{table}
+
+Das \textit{generative} Modell modelliert hierfür die Verteilung der Daten, die nachgebildet werden sollen, in einem Datenraum $\mathbb{R}^n$. Die Aufgabe ist nun, Instanzen zu erstellen, die möglichst dicht an den realen Werten liegen. Je geringer der Abstand zwischen den Daten, desto realistischer die Nachbildung.
+Das \textit{diskriminative} Modell muss dabei eine Grenze im Datenraum bestimmen, welche Instanzen mit verschiedenen Bezeichnungen (engl. Label) voneinander separiert. Kann der Algorithmus eine optimale Abgrenzung dezidieren, können Daten zugeordnet werden, ohne Angabe der jeweiligen bedingten Wahrscheinlichkeiten. Es fungiert demnach als Klassifikator.\\
+
+In Abbildung \ref{fig:gen_dis_Modell} bilden grüne Symbole echte und orangene generierte Daten ab. Dabei ist zu erkennen wie das \textit{generative} Modell die Verteilung modelliert und Instanzen bereits nahe der originalen Daten erstellt. Das \textit{diskriminative} Modell findet hier dennoch eine nahezu optimale Lösung. Lediglich ein Wert wurde fälschlicherweise als Echt klassifiziert.
+
+\begin{figure}[H]
+	\centering
+	\begin{center}	
+		\text{Generatives Modell  \hspace{3.7cm} Diskriminatives Modell}\\
+		\vspace{0.5cm}
+		\includegraphics[width=0.25\textwidth]{img/generatives_Modell.png}
+		\hspace{3cm}
+		\includegraphics[width=0.25\textwidth]{img/diskriminatives_Modell.png}
+	\end{center}
+	\caption{Generatives und diskriminatives Modell}
+	\label{fig:gen_dis_Modell}
+\end{figure}
+
+Die Aufgabe eines \textit{generativen} Modells ist damit deutlich komplexer. Auch Ian J. Goodfellow verweist in seiner Publikation auf Schwierigkeiten der Berechnung dieses Modells. 
+
+Ein \textit{Generative Adversarial Network} realisiert die großartige Idee, die beiden Modell konkurrieren zu lassen, wodurch ein gegenseitiges Trainieren entsteht. Davon profitiert primär das \textit{generative} Modell, denn das Feedback des \textit{diskriminativen} dient als Hilfestellung für die Modellierung neuer Daten.
+So kann die Leistung ganz ohne menschlichen Eingriff sukzessive gesteigert werden, bis Instanzen entstehen, welche nicht länger von den Originalwerten differenziert werden können. 
+
+\cite[vgl.][]{30}
+
+\subsection{Definition eines Autoencoders und dessen Rolle in einem GAN}
+
+Ein \textit{Autoencoder} ist ein \textit{unüberwachtes künstliches neuronales Netz}, welches Eingangsinformationen $x$ zu $z$ komprimiert, um daraus eine Nachbildung $x*$ zu erstellen.
+Während $x$ und $x*$ dieselbe Dimension aufweisen, findet bei der Komprimierung zu $z$ eine Dimensionsreduktion statt, weshalb die Ausmaße von $z$ wesentlich geringer sind. \\
+
+Da es sich hier um zwei Verfahren handeln, setzt sich dieses \textit{künstliche neuronale Netz} aus zwei Abschnitten zusammen: Der \textit{Kodierer} (engl. Encoder) und der \textit{Dekodierer} (engl. Decoder). 
+
+Ersterer komprimiert die Informationen $x$. Die Aufgabe der Komprimierung ist es, relevante Informationen zu selektieren und nur diese weiterzuleiten. Dabei entsteht die Dimension $z$, welches damit eine Repräsentation verdichteter Daten ist. Dies befindet sich in einem sogenannten \textit{verborgenem Raum}, der in der KI-Welt als \textit{latent space} bekannt ist. $z$ beinhaltet demnach nur die wichtigsten Merkmale der Eingangsdaten. \cite{33}
+
+Zweiterer nutzt die Werte des \textit{latent space}, um die Rekonstruktion $x*$ zu bilden. \\
+
+
+So wird erreicht, dass nur wesentliche Informationen weitergeleitet werden.
+
+Folgende Abbildung zeigt schematisch das Verfahren eines \textit{Autoencoders}. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/autoencoder.png}
+	\caption{Autoencoder, eigene Darstellung in Anlehnung an \cite[S. 20]{5}}
+	\label{fig:autoencoder}
+\end{figure}
+
+Dieses \textit{künstliche neuronale Netz} bringt einige Vorteile mit sich:
+
+\begin{itemize}
+	\item Da es sich um ein \textit{Netz} im Bereich des \textit{unüberwachten Lernens} handelt, muss im Vorfeld nicht abgeklärt werden, zu welchem Sinn und Zweck das Verfahren explizit genutzt wird. Das Netz lernt selbst anhand der Inputdaten und passt sich diesen an.
+	\item Dadurch ist eine konkrete Kennzeichnung der Eingabedaten überflüssig.
+	\item Es müssen lediglich die komprimierten Daten übertragen werden. Dadurch wird der Informationsfluss erhöht, trotz Verringerung des Datenumfangs.
+	\item Eingangsdaten können ohne Rauschen reproduziert werden.
+\end{itemize}
+
+\glqq For generation, [...] cut off the encoder part and use only the latent space and the decoder.\grqq{} \cite[S. 24]{5}
+Um bei dieser Methode dennoch eine realitätsnahe Nachbildung ermöglichen zu können, muss der \textit{latent space} näher betrachtet werden. In der Folge, dass es sich nicht länger um eine Komprimierung der Daten $x$ handelt - eine logische Konsequenz, da auf die Verwendung des \textit{Encoders} verzichtet wird - müssen ein adäquater Raum gewählt werden. Hierfür hat sich eine Gleichverteilung mit einer festen Standardabweichung und angepasstem Mittelwert bewährt, wie beispielsweise die Gauß-Verteilung.
+
+Ein \textit{Generatives adversarial Netz} macht sich dieses Verfahren zu nutze und adaptiert das Prinzip des \textit{Decoders}, der Werte aus einem \textit{latent space} entnimmt. So entsteht der \textit{Generator} eines GANs. 
+\cites[vgl.][]{31,32}[S. 18-25]{5}
+
+\subsection{Struktur eines GANs}
+
+Formal gesprochen besteht ein \textit{Generative adversarial Network} aus zwei differenzierbaren Funktionen mit individueller Fehlerfunktion, die durch \textit{künstliche neuronale Netze} mit zugehörigen Modellparametern $\Theta$ repräsentiert werden. Damit sind die Netzwerke mittels \textit{Backpropagation} zu optimieren. \\
+Während der \textit{Diskriminator} die Fehlinterpretation von echten und gefälschten Daten minimieren möchte, versucht der \textit{Generator} die Interpretation des \textit{Diskriminator} in Bezug auf die gefälschten Beispiele zu maximieren. 
+\cite[vgl.][S. 37]{5} \cite[vgl.][S. 2]{4}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img/Architektur_GAN.png}
+	\caption{Architektur eines GANs, eigene Darstellung in Anlehnung an \cite[S. 37]{5}}
+	\label{fig:architektur}
+\end{figure}
+
+Das Zusammenspiel der einzelnen Komponenten ist in Abbildung \ref{fig:architektur} zusammengefasst. Um die Architektur zu verstehen, werden nachfolgend die einzelnen Bestandteile detailliert betrachtet:
+
+\begin{enumerate}
+	\item Im Falle eines GANs handelt es sich bei dem \textbf{latent space} typischerweise um eine Gauß-Verteilung mit einer Standardabweichung von eins und einem Mittel bei 0. Diese enthält zu Beginn jedoch keine ausschlaggebenden Informationen. 
+	Werte, die aus dieser Verteilung entnommenen werden, ergeben einen \textit{random noise vector} $z$ -  vorwiegend ein Vektor mit 100 Einträgen - welcher als Input des \textit{Generators} dient.
+	\cite[vgl.][S. 18, S. 37]{5} \cite[vgl.][]{34}
+	
+	\item Das Ziel des \textbf{Generators} ist es, Beispiele zu generieren, die die Verteilung der Trainingsdaten nachbilden \cite[vgl.][S. 37]{5}. Hierfür nimmt dieser einen \textit{random noise vector} $z$ entgegen, welcher als Startpunkt des Erstellens der gefälschten Exemplare fungiert \cite[vgl.][S. 7]{5}. 
+	Während des Trainings lernt der \textit{Generator}, Werte die einen bestimmten Output ergeben, in dem \textit{latent space} zuzuordnen \cite{34}.
+	
+	\item Die Beispiele eines \textbf{Datensatzes}, mit welchem das GAN trainiert wird, sind diese, die nachgebildet werden. Damit bestimmt ein Datensatz, welche Inferenzen generiert werden. Sie stellen das positiv Beispiel im Training des \textit{Netzwerkes} dar.
+
+	\item \textbf{Diskriminator:} \glqq [is] a discriminative model that learns to determine whether a sample is from the model distribution or the data distribution.\grqq{} \cite[S. 1]{4}
+
+	\item \textit{Fehlerrückführung}
+\end{enumerate}
+
+	%hier ID 5 S. 37- 41
+\subsection{Der Lernprozess eines GANs}
+
+	\subsubsection{Die Fehlerfunktionen} \label{loss-function}
+	
+	\subsubsection{Sequenz des Generators}
+	
+	\subsubsection{Sequenz des Diskriminators}
+	
+	\subsubsection{Herausforderungen des Lernprozesses eines GANS}
+
+\subsection{Herausforderungen des Lernprozesses}
+%auch hier zeigen sich dieselben Probleme wie in Kapitel \ref{HerausforderungenDesLernens}. Doch hier kommen noch spezielle hinzu:
+\textbf{konvergiert nicht}
+\textbf{Mode collapse}
+%Auch die Wahl der HP muss hier nochmal eingehend betrachtet werden. Ein netz kann unterschiedlich groß sein, die Batchgröße ist wichtig, nehm ich einen Bias hinzu...?
+\textbf{Wahl der Hyperparameter}
+\subsection{Varianten des GANs}
+%Die kleinen wie Image-to-Image and so on
+%BigGAN
+%WassersteinGAN
+\subsection{Das Deep Convolutional Generative Adversarial Network}
+%Ist auch eine Variante, aber der Code, auf welchem diese Arbeit beruht, ist ein DCGAN. Daher soll zunächst die Theorie diskutiert werden, um anschließend Codeentscheidungen zu belegen
+\end{document}

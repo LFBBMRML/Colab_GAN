@@ -1,0 +1,334 @@
+\section{Künstliche Neuronale Netze}
+\label{KNN}
+\begin{document}
+Die \textit{künstlichen neuronale Netze} oder auch \textit{künstlichen neuronale Netzwerke} (KNN) sind Methoden im Bereich des Deep Learnings, welche die Realität repräsentieren und daher als Modelle bezeichnet werden \cite[vlg.][S. 40]{13}. Mit diesen Modellen konnten bereits beachtliche Erfolge erzielt werden. Aus enormen Datenmengen extrahieren die Netze \glqq Regelmäßigkeiten, Muster oder Modelle\grqq{} \cite[S. 40]{13}. 
+Sie generieren also \glqq Wissen aus Erfahrung\grqq{} \cite[S. 40]{13} und \glqq der Computer [ist so in der Lage,] eigene Schlussfolgerungen aus diesem Wissen [zu] ziehen\grqq{} \cite[S. 33]{12}.
+Hierdurch entdecken die \textit{KNN} nicht nur schneller Problemlösungen, sondern auch solche, die für den Menschen nicht zu erkennen sind. \cite[vgl.][S. 40]{13}
+
+Ein \textit{künstliches neuronales Netz} setzt sich aus verschiedenen Schichten (engl. \textit{layers}) zusammen:
+fungiert!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{itemize}
+	\item Zu Beginn des Netzes findet sich die \textit{Eingabeschicht} (engl. input layer). Diese repräsentiert die Merkmale, auch Feature genannt, des zu verarbeitenden Inputs als numerischen Wert. Es wird auch von einem $n$-dimensionalen Input- oder Merkmalsvektor $X$ mit den Werten $x\textsubscript{n}$ gesprochen \cite[vlg.][S.176]{14}. Im Falle eines Bildes beispielsweise entspricht ein Pixel einem Merkmal.
+	\item Darauf folgen die \textit{verdeckten Schichten} (engl. hidden layer). Sie dienen der Weiterverarbeitung der Daten.
+	\item den Abschluss bildet die \textit{Ausgabeschicht} (engl. output layer). Sie stellt die Zielwerte der Aufgabe dar. \\
+	\cite[vgl. ][S.72]{12}
+\end{itemize}
+Die Schichten wiederum bestehen aus künstlichen Neuronen, die mittels einer gewichteten Verbindung verknüpft sind. Gewichtet bedeutet, dass eine Verbindung selbst einen Wert besitzt. Dieser Wert regelt dann \glqq den Anteil des Eingangswertes auf die Eingangssumme.\grqq{} \cite[S. 28]{13}, damit hängt die Prädiktion eines Netzes direkt von den Gewichtungen, auch Modellparameter $\Theta$ genannt, ab \cite[vgl.][S. 77]{12}. Die Gewichtungen einer Schicht mit $m$ Neuronen können auch als ein Vektor $w \in \mathbb{R}^m$ abgebildet. Somit ist es möglich einen Input der nachfolgenden Schichten durch Vektormultiplikation zu kalkulieren.
+
+Nicht nur in einem Neuron, auch im gesamten Netz finden einige Vorgänge statt, die dazu beitragen, dass ein KNN so mächtig ist. Diese sollen nachfolgend näher gebracht werden.
+
+\subsection{Das künstliche Neuron}
+\label{Neuron}
+Wie bereits erwähnt, befinden sich künstliche Neuronen in den einzelnen Schichten eines \textit{künstlichen neuronalen Netzes}. Deren Anzahl variiert hierbei von Schicht zu Schicht, jedoch ist jedes Neuron einer Schicht mit allen Neuronen der folgenden Schicht gewichtet verbunden. Dabei ist der Input eines Neurons die Summe der gewichteten Outputs der vorgelagerten Neuronen \cite[vgl.][]{17}. Die Summe wird anschließend auf eine sogenannte \textit{Aktivierungsfunktion} {siehe Kapitel \ref{Aktivierungsfunktion}} angewendet. Damit stellt ein Neuron eine kleine \textit{Berechnungseinheit} dar \cite[vgl.][]{13} die durch folgende Formel definiert ist:
+
+\begin{equation}
+y = f(\sum_{i=0}^{n} w\textsubscript{i}*x\textsubscript{i})
+\end{equation} 
+
+welche in Abbildung \ref{fig:Perzeptron} veranschaulicht dargestellt werden soll. x\textsubscript{n} beschreibt dabei einen Input, w\textsubscript{n} die Gewichtung und o\textsubscript{1} einen Output. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\textwidth]{img/Perzeptron.png}
+	\caption{Perzeptron, eigene Darstellung}
+	\label{fig:Perzeptron}
+\end{figure}
+
+Eine Ausnahme hiervon bildet die Eingabeschicht, denn wie bereits erwähnt, handelt es sich bei diesen Neuronen um den Merkmalsvektor, bei welchem ein Neuron einem Merkmal entspricht \cite[vgl.][S.177]{14} 
+Die Eingabewerte $x\textsubscript{n}$ bilden also unverändert die erste Schicht \cite[vgl.][S.178]{14} . Nachfolgende Graphik zeigt ein extrem vereinfachtes KNN, anhand dessen die in den einzelnen Neuronen stattfindenden Vorgänge visualisiert:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{img/NN-Berechnung.png}
+	\caption{Ein einfaches KNN, eigene Darstellung}
+	\label{fig:NN-Berechnung}
+\end{figure}
+
+Abbildung \ref{fig:NN-Berechnung} zeigt, dass die Neuronen der Eingabeschicht lediglich einen Inputvektor der Größe $\mathbb{R}^3$ darstellen. Die mathematische Manipulation der Daten beginnt in der folgenden Schicht, der ersten verdeckten, und endet mit der Ausgabeschicht. In dieser befinden sich zwei Neuronen. Das bedeutet, dass \glqq aus einer dreidimensionalen Eingabe zwei Größen [prädiziert]\grqq{} \cite[S.174]{14} wurden. Der Wert der Prädiktion soll in kommendem Kapitel näher diskutiert werden.
+
+\subsection{Aktivierungsfunktion} 
+\label{Aktivierungsfunktion}
+Ein Neuron leitet ein Signal nur dann weiter, wenn dieses einen gewissen Schwellenwert übersteigt. Dafür bildet die Summe des Eingabevektors mit den je zugehörigen Gewichtungen den Parameter der \textit{Aktivierungsfunktion}. Zusätzlich normalisiert diese die Werte, die durch das Netz fließen. So wird verhindert, dass ein drastisch unterschiedlicher Wertebereich entsteht \cite[vlg.][]{18}. 
+Wird der Schwellenwert übertroffen, wird das Neuron aktiviert und das Ergebnis bildet den zu übertragenden Ausgang. Je nach Funktion können unterschiedliche Resultate erwartet werden. Die Bedeutendsten im Bereich der \textit{künstlichen neuronalen Netze} sind nachstehend mit zugehörigem Wertebereich aufgelistet. \cite[vgl.][S. 70]{12} \cite[vgl.][S. 35]{13} 
+
+\begin{table}[h]
+	\begin{tabular}[h]{p{1cm}|p{4cm}|p{3.9cm}|p{5.1cm}}
+		Index & Bezeichnung & Formel & Wertebereich der Ausgabe \\
+		\hline
+		\rule{0pt}{2em}
+		1 & Sigmoid & ${f(x)= \frac {1}{1+e\textsuperscript{-x}}}$ & [0, 1] \\
+		\rule{0pt}{2em}
+		2 & Rectified Linear Unit (ReLU) & ${f(x) = max(0,x)}$ & 
+		$f(x)= \begin{cases}
+		0, \mbox{ für } x < 0 \\ x, \mbox{ für } x \ge 0 
+		\end{cases}$ \\
+		\rule{0pt}{2em}
+		3 & LeakyReLU & ${f(x) = max(\alpha x,x)}$, mit $\alpha$ = 0.01 &
+		$f(x)= \begin{cases}
+		0.01x, \mbox{ für } x < 0 \\ x, \mbox{ für } x \ge 0 
+		\end{cases}$ \\
+		\rule{0pt}{2em}
+		4 & Tangens hyperbolicus (tanh) & ${f(x)= \frac {e\textsuperscript{x} - e \textsuperscript{-x}} {e\textsuperscript{x} + e\textsuperscript{-x}}}$ & [-1, 1] \\
+		\rule{0pt}{2em}
+		5 & Softmax & $f(x)= \frac{e\textsuperscript{xi}}{\sum_{j=1}^{N} e\textsuperscript{xj}}$ mit $i = 1,...,N$ & [0, 1]
+	\end{tabular}
+	\captionsetup{justification=centering}
+	\caption{Aktivierungsfunktion mit zugehöriger Formel und Wertebereich \\ Daten in Anlehnung an \cite[vgl.][]{18}}
+	\label{tab:Aktivierungsfunktion}
+\end{table}
+
+Die Auswahl der passenden Funktion hängt nicht nur von ihrem Wertebereich ab. Zu aktuellem Stand der Forschung ist nicht immer gegeben, dass eine spezielle Methode eine hinreichende Lösung für gleiche Probleme ist. Daher ist es ratsam, ein \textit{künstliches neuronales Netz} mit unterschiedlichen Methoden zu testen, trainieren und anschließend zu evaluieren.
+\\
+Daneben sollte die Wahl einer Funktion der Ausgabeschicht genauer betrachtet werden. Hier ist ein essenzieller Punkt, der zur Entscheidung beiträgt, das Klassifikationsproblem. %Die Neuronen bilden hier die Zielwerte der Aufgabe ab. 
+In den meisten Netzen finden sich die \textit{Sigmoidfunktion}, die \textit{tanh-Funktion} oder die \textit{Softmaxfunktion} in dem Output-Layer.
+
+\begin{itemize}
+	\item \textit{Sigmoid}: findet Verwendung in der Wahrscheinlichkeitsschätzung \cite[vgl.][S. 18]{7}. Der Output kann so interpretiert werden, wie sicher das Modell ist, dass ein spezieller Input einer Klasse angehört oder nicht.
+	\cite[vlg.][]{19}
+	
+	\item \textit{Softmax}: Die Werte einer Schicht werden hier nicht nur auf einen Wertebereich [0,1] normalisiert, sondern ordnet jede Ausgabe so zu, dass die Gesamtsumme 1 ergibt. Dies gleicht einer Wahrscheinlichkeitsverteilung. \cite[vgl.][]{18} 	
+\end{itemize}
+
+\subsection{Lernprozess}
+\label{Lernprozess}
+Das Ziel eines Modells ist es, eine hinreichend präzise Abbildung des Inputs auf einen gegebenen Output zu prädizieren, also Eingabedaten realitätsnah zu klassifizieren. Dies erreicht ein Modell dann, wenn alle Gewichtungen des Netzes ihrem optimalen Wert entsprechen. 
+
+Zu Beginn werden die Gewichtungen üblicherweise mit zufälligen Werten initialisiert \cite[vgl.][S. 166]{13} \cite[vgl.][]{20}, welche im Laufe des Lernprozesses sukzessiv angepasst werden.
+
+Um dies zu erreichen wird zunächst mittels einer \textit{Fehlerfunktion} ein Fehler an der Ausgabeschicht \cite[vgl.][]{20} ermittelt. Anschließend muss dieser rückwärts gerichtet durch das Netz geführt werden, um so die einzelnen Gewichtungen durch ein Gradientenabstieg der \textit{Fehlerfunktion} anzupassen. 
+
+Diese mathematischen Vorgehen kombiniert, werden als \textit{Backprogagation} bezeichnet und nachstehend näher erläutert. \cite[vgl.][]{20}
+
+\subsubsection{Fehlerfunktion} 
+\label{Fehlerfunktion}
+Eine \textit{Fehlerfunktion} (engl. \textit{loss-function}), auch \textit{Kostenfunktion} (engl. \textit{cost-function}) genannt, bestimmt also die \glqq Diskrepanz zwischen errechnetem und erwartetem Output\grqq{} \cite[S. 77]{12} in der Ausgabeschicht. Formel \ref{Eq:ff} definiert die einfachste Form der Funktion:
+
+\begin{equation} \label{Eq:ff}
+	E = y - \hat{y}
+\end{equation}
+mit $E$ als Fehlerwert, $y$ als Soll- und $\hat{y}$ als Ist-Wert \cite[vgl.][S. 161]{13}.
+\\ 
+
+Neben des Ausdrucks \ref{Eq:ff} bestehen zahlreiche weitere \textit{Fehlerfunktionen}, wobei die Komplexität meist zunimmt und die Aufgabengebiete variieren. Nachstehend werden einige bekannte Funktionen kurz vorgestellt:\\
+
+Die \textbf{Mean Squared Error - Funktion} (MSE) ermittelt den mittleren quadratischen Fehler. Sie eignet sich beispielsweise für Regressionsprobleme:
+\begin{equation} 
+	E = \frac{1}{n} \sum_{i=1}^{n} (y\textsubscript{i} - \hat{y}\textsubscript{i})^{2}
+\end{equation}
+\cite[vgl.][S. 76 f.]{12} \\
+
+Die \textbf{Categorical Crossentropy} findet Verwendung in Klassifikationsaufgaben, bei welchen ein Input einer von mehreren möglichen Klassen zugeordnet werden soll. Diese \textit{Fehlerfunktion} ermittelt einen \textit{One-Hot-Vector} als Output, welcher mit dem realen Vektor abgeglichen wird. \cite[vgl.][]{10, 12}
+\begin{equation} 
+	E = - \sum_{i=1}^{n} y\textsubscript{i} * log(\hat{y}\textsubscript{i}) 
+\end{equation}
+\cite[vgl.][]{23} \\
+
+
+Auch die \textbf{Binary Crossentropy} wird auf Klassifikationsprobleme angewendet, jedoch handelt es sich hier um eine Zuordnung zu lediglich zwei möglichen Klassen. Die Ausgabeschicht besteht aus einem Neuron, welches eines der zwei Label abbildet. Dadurch entspricht die Vorhersage nur einem Skalar, welcher aussagt, wie sicher das Modell einen konkreten Input dieser Klasse zuordnet. 
+Strebt die Prädiktion des Modells gegen 1, so ordnet es die Eingabedaten der Klasse zu, wohingegen ein streben gegen 0 bedeutet, dass die Daten der anderen Klasse zugewiesen werden. 
+\begin{equation} 
+	E = -\frac{1}{n} \sum_{i=1}^{n} y\textsubscript{i} * log(\hat{y}\textsubscript{i}) + (1-y\textsubscript{i}) * log(1-\hat{y}\textsubscript{i})
+\end{equation}
+\cite[vgl.][]{22} \\
+
+Die Werte $E$, $y$ und $\hat{y}$ der folgenden Gleichungen wurden bereits vorgestellt. Hinzu kommt die Variable $n$. Diese entspricht der Dimension des Outputvektors $o = \mathbb{R}^n$
+\\
+
+Das Ziel ist es, die Differenz $E$ zu minimieren, was durch die kontinuierliche Anpassung der Gewichtungen erreicht wird. Das bedeutet, dass die \textit{Zielfunktion} \glqq in Bezug auf die Parameter\grqq{} \cite[S. 185]{14} optimiert wird \cite[vgl.][]{21} \cite[vgl.][S. 76]{12}
+\glqq Angefangen mit den Gewichtungen in der letzten Verbindung zwischen dem Output-Layer und dem vorherigen Layer, werden die Anpassungen Layer für Layer in Richtung der Input-Layer vorgenommen.\grqq{} \cite[S. 78]{12}
+
+Diese sukzessive Angleichung wird durch das sogenannte \textit{Gradientenverfahren} erreicht.
+
+\subsubsection{Gradientenverfahren}
+\glqq Gradient descent [zu deutsch: Gradientenverfahren] is one of the most popular algorithms to perform optimization and by far the most common way to optimize neural networks.\grqq{} \cite{21}
+
+Das \textit{Gradientenverfahren} (engl. gradient descent) ist ein mathematisches Verfahren, um Optimierungsprobleme zu lösen. Ein \textit{Gradient} bestimmt die Richtung der größten Änderung. Da die Optimierung einer \textit{Fehlerfunktion} darauf beruht, diese zu minimieren, wird das \textit{Gradientenverfahren} angewandt, um das globale Minimum zu finden. Es ist hier also die größte negative Änderung von Bedeutung. Dieser Wert wird durch die Ableitung einer Funktion an der Stelle $x$ ermittelt. Folgende allgemeine Gleichung definiert die Anpassung der Gewichte: (Formel von Buch ID 12, S.77. Hinweis auf Batchgröße miteinbringen?)
+\begin{equation} 
+	w\textsubscript{i\textsubscript{new}} = w\textsubscript{i\textsubscript{old}} - \eta * \frac{\partial E}{\partial w\textsubscript{i}}
+\end{equation}
+\glqq Die neue Gewichtung ergibt sich aus der Differenz zwischen der Gewichtung, die angepasst werden soll, und der partiellen Ableitung des berechneten Fehlers $E$ in Bezug auf die Gewichtungen $w\textsubscript{i}$\grqq{} \cite[S. 77]{12}. Die Ableitung wird mit dem Parameter $\eta$ multipliziert. Dieser wird als \textit{Lernparameter} bezeichnet und bestimmt die Schrittweite, mit welcher die Werte der Modelparameter sich dem Minimum annähern.
+\cite[vgl.][]{21} \\
+
+Wurde dies erreicht, kann davon ausgegangen werden, dass die Parameter ihren bestmöglichen Wert erreicht haben. \cite[vgl.][]{12, 13, 21}. 
+
+Abbildung \ref{fig:Gradientenverfahren} stellt die Funktion eines Gewichtes $w\textsubscript{i} \in \Theta = (w\textsubscript{1}, ..., w\textsubscript{n})$ dar und veranschaulicht damit das Prinzip des \textit{Gradientenverfahrens}. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{img/Graph-Gewicht.png}
+	\caption{Gradientenverfahren, eigene Darstellung}
+	\label{fig:Gradientenverfahren}
+\end{figure}
+
+Der Startpunkt entspricht dem zufälligen Startwert der Gewichtung. Dieser Punkt soll im Laufe des Trainings sukzessive dem globalen Minimum annähern.
+
+Tatsächlich ist dieses Verfahren um ein vielfaches komplexer, da es sich nicht wie in Abbildung \ref{fig:Gradientenverfahren} um ein zweidimensionalen Raum $\mathbb{R}^2$ handelt, sondern um einen multidimensionalen Raum $\mathbb{R}^n$. \cite[vgl.][S. 79]{12}
+
+\subsubsection{Herausforderungen des Lernens} \label{HerausforderungenDesLernens}
+Aufgrund der Komplexität ist das Training eines Netzes vielen Herausforderungen gegenüber gestellt: \\
+
+Das Finden des \textbf{globalen Minimums} stellt eine signifikante Problematik dar. Es besteht hier das Risiko, dass sich die Parameter in einem lokalen Minimum einpendeln, oder einen Sattelpunkt erreichen. In beiden Fällen stagniert die Anpassung und der Idealwert kann nicht erreicht werden. \cite[vgl.][]{21} 
+Dieses Problem ist kaum zu umgehen, jedoch kann mithilfe unterschiedlicher Startwerte unterschiedliche Minima gefunden werden. Damit wird die Wahrscheinlichkeit erhöht, das globale Minimum zu finden.\\
+
+Das \textbf{Overfitting} ist ein Phänomen, welches eintritt, wenn sich ein Modell zu sehr an die Trainingsdaten angepasst hat und aufgrund dessen keine Generalisierung stattfindet. Es wird davon gesprochen, dass das Modell die Trainingsdaten \glqq auswendig gelernt\grqq{} hat \cite[vgl.][S.82]{12}. Um diesem Problem entgegenwirken, können zwei interessante Methoden angewendet werden. Zum einen das \textit{Early Stopping}, welches das Training an einem Punkt beendet, obwohl der Fehler weiter reduziert werden könnte, jedoch ab diesem Punkt wieder zunehmen würde. Und zum anderen das \textit{Dropout}. Bei diesem Verfahren werden in der Eingabe- sowie den verdeckten Schichten eine gewisse Anzahl an zufällig ausgewählten Neuronen nicht mitberechnet. Abbildung \ref{fig:Dropout} veranschaulicht dieses Prinzip \cite[vgl.][S. 216 f.]{13} 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/Dropout.png}
+	\caption{Prinzip des Dropouts, eigene Darstellung}
+	\label{fig:Dropout}
+\end{figure} 
+
+
+Von \textbf{Vanishing Gradients} wird gesprochen, wenn die \textit{Fehlergradienten} mit Annäherung an die Eingabeschicht immer kleiner werden. Dadurch wird eine Lösung nicht oder nur sehr langsam erzielt \cite[vgl.][S. 210]{13}. Es empfiehlt sich, eine \textit{Aktivierungsfunktion} zu wählen, die diesem Problem direkt entgegenwirken kann, wie beispielsweise die \textit{Leaky ReLU}. \cite[vgl.][S. 212]{13} \\
+
+Auch die \textbf{Wahl der Hyperparameter} ist eine bedeutende Thematik. \textit{Hyperparameter} beschreiben dabei entscheidende Parameter, die ein Netz definieren \cite[vgl.][S. 202]{13}.
+Jedoch ist die ideale Abstimmung der \textit{Hyperparameter} aktuell Gegenstand der Forschung. Bislang kann keine Antwort gegeben werden, welche Einstellung der Parameter eine hinreichende Lösung für bestimmte Problemstellungen ausmacht \cite[vgl.][]{24}. Daher ist es sinnvoll einige Testläufe durchzuführen und anschließend zu evaluieren, um die \textit{Hyperparameter} für einen konkreten Fall ideal festlegen zu können. \\	
+
+Um eine Konvergenz des Lernprozesses der \textit{künstlichen neuronalen Netze} zu begünstigen, werden sogenannte \textit{Optimierer} (engl. Optimizer) angewendet. \glqq Diese Algorithmen unterscheiden sich im Wesentlichen in der Art und Weise, wie sie mit den verfügbaren Parametern zum Lernverfahren umgehen\grqq {} \cite[S. 80]{12}.
+
+Algorithmen, die sich je nach Art und Weise des Netzes als geeignet erwiesen, sind unter anderem:
+
+\begin{itemize}
+	\item Momentum Optimierer
+	\item \textbf{Ada}ptive \textbf{Gra}dient (AdaGrad)
+	\item \textbf{R}oot \textbf{M}ean \textbf{S}quare Propagation\textbf{Prop}agation (RMSprop) 
+	\item \textbf{Ada}ptive \textbf{M}oment Estimation (Adam)
+\end{itemize}
+\cite[vgl.][S. 80]{12}
+
+
+\subsubsection{Batchgröße}
+Ein weiterer essenzieller \textit{Hyperparameter}, der die Dynamik eines Netzes beeinflusst, bildet die \textit{Batchgröße}. Dieser Parameter bestimmt die Anzahl von Exemplaren der Trainingsdaten, die eine Teilmenge darstellen. Diese wird auch \textit{Batch} genannt. Es handelt sich dabei um eine konstante Größe, während die Beispieldaten meist zufällig aus dem gesamten Satz gruppiert werden. Dieser \textit{Hyperparameter} beeinflusst nicht nur die Lerngeschwindigkeit eines Modells, sondern auch die Stabilität des Lernprozesses.
+
+Wurden die Gewichtungen des Netzes mittels einer Untermenge adaptiert, folgt die nächste Anpassung mit einer differenten Teilmenge. Dies wiederholt sich, bis so der gesamte Trainingssatz einmal durchlaufen wurde. \glqq Den Zyklus, bei dem der Algorithmus einmal durch all diese Trainingsdaten durchgelaufen ist, nennt man \textit{Epoche}.\grqq {} \cite[S. 75]{12}
+
+Dabei sind drei Begriffe zu unterscheiden:
+\begin{itemize}
+	\item \textbf{Batch Gradient Descent:} Batchgröße = gesamter Trainingsdatensatz
+	\item \textbf{Stochastic Gradient Descent:} Batchgröße = 1 
+	\item \textbf{Mini-Batch:} 1 < Batchgröße < gesamter Trainingsdatensatz
+\end{itemize}
+
+Nicht immer führt eine enorme Datenmenge zu optimalem Ergebnis. Dies spiegelt sich auch bei der \textit{Batchgröße}. Kleinere \textit{Batches} resultieren durch ihr rauschen in einer effektiveren Generalisierung und verfügen über einen deutlicheren Regularisierungseffekt.
+Zudem sollte die Größe den Speicheranforderungen der Hardware entsprechen. Daher wird weitgehend von einer Anzahl von 32, 64 oder 128 Exemplaren pro \textit{Batch} gesprochen.
+
+\cite[vgl.][]{25, 26}
+
+\subsection{Arten künstlicher neuronaler Netze}
+Mittlerweile besteht eine enorme Diversität von \textit{künstlichen neuronalen Netzen}, welche sich jedoch alle in ähnlicher Weise den bisher definierten Prinzipien bedienen.
+Nachstehend sind in Kürze zwei wesentliche Varianten vorgestellt.
+
+\subsubsection{Multilayer Perzeptron}
+Ein \textit{Perzeptron} setzt sich in seiner einfachsten Variante aus einem Neuron mit dessen gewichtetem Input, einer Aktivierungsfunktion und dem daraus resultierendem Output zusammen. Es wurde 1957 von Frank Rosenblatt entwickelt um im Jahre 1958 vorgestellt. Es gleicht der unter Abbildung \ref{fig:Perzeptron} präsentierten Struktur.
+
+Von einem \textit{Multilayer Perzeptron} (MLP) wird dann gesprochen, wenn es sich um ein mehrschichtiges Netz handelt. Informationen werden vorwärts gerichtet von der Eingabeschicht über die verdeckten Schichten zur Ausgabeschicht geleitet. 
+
+Die einzelnen Schichten des MLPs sind dabei untereinander vernetzt, wobei Neuronen derselben Schicht keine Verbindung vorweisen.
+\cite[vgl.][]{15, 17}  \cite[vgl.][S. 80, S. 144]{13}
+\\
+Der Aufbau eines MLPs ähnelt also der unter Kapitel \ref{KNN} und \ref{Neuron} beschriebenen Architektur. Diese wird durch Abbildung \ref{fig:Netz} schematisch dargestellt, wobei \glqq x\textsubscript{x}\grqq{} die Eingabeneuronen, \glqq h\textsubscript{xx}\grqq{} die verdeckten Neuronen und \glqq o\textsubscript{1}\grqq{} das Ausgangsneuron repräsentiert.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{img/NN.png}
+	\caption{Architektur eines multilayer Perzeptrons, eigene Darstellung}
+	\label{fig:Netz}
+\end{figure}
+
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.6\textwidth]{img/NN-gelernt.png}
+%	\caption{Verbindungen eines trainierten multilayer Perzeptrons, eigene Darstellung}
+%	\label{fig:NN-gelernt}
+%\end{figure}
+
+\subsubsection{Convolutional Neural Network}
+Das \textit{Convolutional neural Network} (CNN) ist eine bedeutende Art des \textit{künstlichen neuronalen Netzwerks}. Sie \glqq sind in der Bilderkennung die State-of-the-Art-Methode\grqq{} \cite{29} und dies mit guten Gründen:
+
+\begin{itemize}
+	\item Sie verarbeiten selbst enorme Mengen an Eingabedaten äußerst erfolgreich
+	\item CNNs sind gegenüber Verzerrungen oder anderen optischen Veränderungen unempfindlich
+	\item Auch bei Bildern mit verschiedenen Lichtverhältnissen und unterschiedlichen Perspektiven können typische Merkmale problemlos extrahiert werden.
+	\item Sie weisen einen wesentlich geringeren Speicherplatzbedarf auf
+	\item Dank neuester Hardware kann ein effizienter Trainingsprozess sichergestellt werden
+\end{itemize}
+
+Klassische KNN, wie das MLP, sind starke Verfahren. Würden diese Modelle jedoch für die Verarbeitung von extrem großen Inputdaten verwendet werden, wie beispielsweise für die Bildverarbeitung, würde die Summe an Neuronen und Gewichtungen enorme Ausmaße annehmen.
+Das CNN bedient sich eines Prinzips, durch welches sich die Komplexität erheblich reduzieren lässt. Neuronen dieser Netze teilen sich Verbindungen, \glqq wobei jede nachfolgende Schicht nur auf einen lokalen Bereich der Vorgängerschicht reagiert\grqq \cite[S. 198]{13}. 
+
+Dies ermöglicht einen effizienten Trainingsprozess, trotz extremen Eingabedaten. \\
+
+Die Struktur dieser Modelle besteht aus zwei Teilen: an erster Stelle der Kodierungs- und folgend der Prädiktionsblock.
+
+In Ersterem findet die sogenannte \textit{Faltung} (engl. convolution) statt. Das Eingabebild wird als Matrix dargestellt, ebenso wie die Gewichtungen, welche als \textit{Filter} fungieren und typischerweise einer 3x3- oder 5x5-Matrix entsprechen. Jeder \textit{Filter} extrahiert dabei ein bestimmtes Merkmale, wie Linien, Kanten, Formen etc., des zugrundeliegenden Inputs.
+
+Dieser ist zu Beginn das Eingangsbild. Wurden die Gewichtungen auf dieses angewendet, entsteht eine neue Ebene, auch \textit{Feature Map} genannt. Diese dient als Input für die folgende Faltung, wobei während einer Faltung mehrere \textit{Filter} angewendet werden können. Eine Ebene stellt dabei ein ausgelesenes \textit{Merkmal} dar.
+Die \textit{Feature Maps} einer Faltung Gruppiert werden als \textit{Convolutional Layer} bezeichnet.
+
+Die Gewichtungen bewegen sich in einer festgelegten Schrittweite über den Input. Bei jedem Schritt werden die überlappenden Werte multipliziert und die Produkte summiert. Somit werden die \textit{Feature} sukzessive extrahiert und eine neue Ebene entsteht. Abbildung \ref{fig:multiplikation} stellt die Berechnung exemplarisch dar: 
+\cite[vgl.][]{27}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/CNN-multiplikation.png}
+	\caption{Berechnung CNN, eigene Darstellung in Anlehnung an \cite{28}}
+	\label{fig:multiplikation}
+\end{figure}
+
+daraus entsteht folgende Formel:
+
+\begin{equation} 
+x\textsubscript{11} * w\textsubscript{1} +
+x\textsubscript{12} * w\textsubscript{2} +
+x\textsubscript{21} * w\textsubscript{3} +
+x\textsubscript{22} * w\textsubscript{4} + ... =
+\end{equation}
+
+Abbildung \ref{fig:Faltung} veranschaulicht das Prinzip der Faltung eines Farbbild:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{img/Faltung.png}
+	\caption{Berechnung CNN, eigene Darstellung in Anlehnung an \cite{28}}
+	\label{fig:Faltung}
+\end{figure}
+
+Einer Faltung folgt für gewöhnlich ein \textit{Pooling}, welches ebenso eine Reduktion der Dimensionen des Inputs bewirkt. Meist wird hierfür das \textit{Max Pooling} verwendet. Dabei wird innerhalb eins 2x2- oder 3x3-Filter, der maximale Wert bestimmt. Diese Werte bilden den Input des folgenden Vorgangs. \cite[vgl.][S. 204]{13}
+
+In Abbildung \ref{fig:Pooling} wird ein 2x2-Filter auf einen 4x4-Input angewendet. Die überflüssigen Informationen eines Filters werden verworfen, sodass nur der höchste Wert weitergeleitet wird.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/Pooling.png}
+	\caption{Max Pooling, eigene Darstellung in Anlehnung an \cite{28}}
+	\label{fig:Pooling}
+\end{figure}
+
+Der Vorteil des Poolings besteht in der Reduktion der Datenmenge. Dies gewährleistet eine gesteigerte Berechnungsgeschwindigkeit trotz Erhalt der Leistungsfähigkeit. \cite[vgl.]{29}
+
+Der Prozess von Faltung, gefolgt von Pooling, kann unbegrenzt häufig durchgeführt werden. Solange, bis das verfolgte Ziel, einen Input ausreichend beschreiben zu können, erreicht ist.
+\cite[vgl.][]{27}
+
+Daraufhin folgt der Prädiktionsblock. Hier wird das sogenannte \textit{Flatten} auf den letzten \textit{Convolutional Layer} angewendet, also in einen Vektor kodiert.
+Die Abbildung \ref{fig:Flatten} veranschaulicht das Verfahren des \textit{Flattens}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{img/Flatten.png}
+	\caption{Flatten einer 3x3 Matrix, eigene Darstellung}
+	\label{fig:Flatten}
+\end{figure}
+
+Anschließend dient der Vektor als Input eines üblichen KNN \glqq das die kodierte Repräsentation des Bildes klassifiziert\grqq. \cite[S. 199]{13}
+
+Nachstehend ist die gesamte Struktur eines \textit{convolutional neural Networks} anschaulich dargestellt:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{img/CNN-Struktur2.png}
+	\caption{Struktur eines CNN, eigene Darstellung in Anlehnung an \cite{13, 28}}
+	\label{fig:CNN-Struktur}
+\end{figure}
+
+\cite[vgl.][]{13,27,28,29}
+\end{document}
