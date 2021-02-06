@@ -120,14 +120,63 @@ Das Zusammenspiel der einzelnen Komponenten ist in Abbildung \ref{fig:architektu
 	Werte, die aus dieser Verteilung entnommenen werden, ergeben einen \textit{random noise vector} $z$ -  vorwiegend ein Vektor mit 100 Einträgen - welcher als Input des \textit{Generators} dient.
 	\cite[vgl.][S. 18, S. 37]{5} \cite[vgl.][]{34}
 	
-	\item Das Ziel des \textbf{Generators} ist es, Beispiele zu generieren, die die Verteilung der Trainingsdaten nachbilden \cite[vgl.][S. 37]{5}. Hierfür nimmt dieser einen \textit{random noise vector} $z$ entgegen, welcher als Startpunkt des Erstellens der gefälschten Exemplare fungiert \cite[vgl.][S. 7]{5}. 
-	Während des Trainings lernt der \textit{Generator}, Werte die einen bestimmten Output ergeben, in dem \textit{latent space} zuzuordnen \cite{34}.
+	\item Das Ziel des \textbf{Generators} ist es, eine Datenverteilung $p\textsubscript{g}$ zu lernen, die mit der Verteilung der Trainingsdaten $p\textsubscript{x}$ konvergiert. Die Funktion $G$, die durch den \textit{Generator} repräsentiert wird, wird durch die Modellparameter $\Theta\textsubscript{g}$ bestimmt. Diese erhält als Input einen \textit{random noise vector} $z$. Wird die Funktion $G$ nun auf $z$ angewandt, entsteht ein generierter Output $G(z)$. 
+	Während des Trainings lernt der \textit{Generator}, Werte die einen bestimmten Output ergeben, in dem \textit{latent space} zuzuordnen \cite{34}.\cite[vgl.][S.5, S. 37]{5}
 	
-	\item Die Beispiele eines \textbf{Datensatzes}, mit welchem das GAN trainiert wird, sind diese, die nachgebildet werden. Damit bestimmt ein Datensatz, welche Inferenzen generiert werden. Sie stellen das positiv Beispiel im Training des \textit{Netzwerkes} dar.
+	\item Die Beispiele eines \textbf{Datensatzes}, mit welchem das \textit{Generative adversarial Network} trainiert wird, sind diese, deren Verteilungen rekonstruiert werden sollen. Damit bestimmt ein Datensatz, welche Verteilung gelernt wird. \cite[vgl.][S. 7]{5}
 
-	\item \textbf{Diskriminator:} \glqq [is] a discriminative model that learns to determine whether a sample is from the model distribution or the data distribution.\grqq{} \cite[S. 1]{4}
+	\item Der \textbf{Diskriminator} nimmt als Input ein echtes $x$ oder ein gefälschtes $G(z)$ Beispiel entgegen. Die Aufgabe besteht darin, zu lernen, diese richtig zu klassifizieren. Dabei gibt die Funktion $D$, welche durch den \textit{Diskriminator} vertreten und durch die Modellparameter $\Theta\textsubscript{d}$ bestimmt ist, einen Skalar $D(x)$ aus. Dieser gibt für jeden Input die geschätzte Wahrscheinlichkeit (Wert zwischen [0,1]), dass $x$ ein echtes Beispiel ist.  \cite[vgl.][S. 1f.]{4}
 
-	\item \textit{Fehlerrückführung}
+	\item Die \textbf{Fehlerrückführung} basiert auf der Ausgabe $D(x)$ des \textit{Diskriminators}. Dabei variiert die Notation: $D(x)$ wird verwendet, wenn es sich bei einem Input um ein echtes, $D(x^*)$ oder $D(G(z))$, wobei $D(x^*) = D(G(z))$ ist, wenn es sich um generiertes Beispiel handelt. Werden die genannten Ziele der \textit{Netze} betrachtet, ergibt sich daraus folgende Tabelle:
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabulary}{20cm}{L|L|L}
+			\multirow{2}*{Input} & \multicolumn{2}{c}{zu erreichende Ausgabe} 
+			\rule{0pt}{1.5em}\\
+				
+			\rule{0pt}{1.5em}
+			&  Diskriminator  &  Generator \\
+			\hline
+			\rule{0pt}{1.5em}
+			\textbf{Echt} ($x$) & 1 & / \\
+			\rule{0pt}{1.5em}
+			\textbf{Generiert} ($G(z)$) & 0 & 1 
+			\rule{0pt}{1.5em}
+		\end{tabulary}
+		\captionsetup{justification=centering}
+		\caption{Der Wert der Ausgabe des Diskriminators, die das jeweilige Netz versucht zu 		erreichen}
+		\label{tab:Ziel_Ausgabe}
+	\end{table}
+	
+	damit ergibt sich folgende Terminologie, welche Tabelle \ref{tab:Dis_Output} vorlegt:\\
+	\textit{True positive}: Echte Beispiele korrekt als solche klassifiziert \\
+	\textit{False negative}: Echt Beispiele fälschlicherweise als generierte klassifiziert \\
+	\textit{True negative}: Generierte Beispiele korrekt als solche klassifiziert \\
+	\textit{False positive}: Generierte Beispiele fälschlicherweise als echte klassifiziert \\
+	\cite[vgl.][S. 41]{5}
+	
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabulary}{20cm}{L|L|L}
+			\multirow{2}*{Input} & \multicolumn{2}{c}{Ausgabe des Diskriminators} 
+			\rule{0pt}{1.5em}\\
+			
+			\rule{0pt}{1.5em}
+			&  \textasciitilde 1  &  \textasciitilde 0 \\
+			\hline
+			\rule{0pt}{1.5em}
+			\textbf{Echt} ($x$) & True positive & False negative \\
+			\rule{0pt}{1.5em}
+			\textbf{Generiert} ($G(z)$) & False positive & True negative 
+			\rule{0pt}{1.5em}
+		\end{tabulary}
+		\captionsetup{justification=centering}
+		\caption{Ausgabe eines Diskriminators, Daten in Anlehnung an \cite[vgl.][S. 41]{5}}
+		\label{tab:Dis_Output}
+	\end{table}
+
 \end{enumerate}
 
 	%hier ID 5 S. 37- 41
